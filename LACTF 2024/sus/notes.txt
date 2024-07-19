@@ -1,0 +1,49 @@
+To obtain libc and ld, run 
+
+```
+docker run --rm -it -v "$PWD":/app debian@sha256:36a9d3bcaaec706e27b973bb303018002633fd3be7c2ac367d174bafce52e84e
+```
+
+Offset of retaddr: 72
+Offset of buffer that gets assigned to rdi: 56
+
+Could not use libc.symbols.puts because puts is some macro that resolves to __GI__IO_puts that isn't a symbol
+Had to get the offset of __GI__IO_puts using gdb and vmm
+
+Same for libc.symbols.system, which ends up being __libc_system()
+
+
+Finding address of "/bin/sh" in binary
+
+gef➤  vmm
+[ Legend:  Code | Heap | Stack ]
+Start              End                Offset             Perm Path
+0x0000000000400000 0x0000000000401000 0x0000000000000000 r-- /mnt/d/CTFs/LACTF 2024/sus/sus_patched
+0x0000000000401000 0x0000000000402000 0x0000000000001000 r-x /mnt/d/CTFs/LACTF 2024/sus/sus_patched
+0x0000000000402000 0x0000000000403000 0x0000000000002000 r-- /mnt/d/CTFs/LACTF 2024/sus/sus_patched
+0x0000000000403000 0x0000000000404000 0x0000000000002000 r-- /mnt/d/CTFs/LACTF 2024/sus/sus_patched
+0x0000000000404000 0x0000000000405000 0x0000000000003000 rw- /mnt/d/CTFs/LACTF 2024/sus/sus_patched
+0x0000000000cb9000 0x0000000000cda000 0x0000000000000000 rw- [heap]
+0x00007fbd34dfa000 0x00007fbd34dfd000 0x0000000000000000 rw-
+0x00007fbd34dfd000 0x00007fbd34e25000 0x0000000000000000 r-- /usr/lib/x86_64-linux-gnu/libc.so.6
+0x00007fbd34e25000 0x00007fbd34fba000 0x0000000000028000 r-x /usr/lib/x86_64-linux-gnu/libc.so.6
+0x00007fbd34fba000 0x00007fbd35012000 0x00000000001bd000 r-- /usr/lib/x86_64-linux-gnu/libc.so.6
+0x00007fbd35012000 0x00007fbd35013000 0x0000000000215000 --- /usr/lib/x86_64-linux-gnu/libc.so.6
+0x00007fbd35013000 0x00007fbd35017000 0x0000000000215000 r-- /usr/lib/x86_64-linux-gnu/libc.so.6
+0x00007fbd35017000 0x00007fbd35019000 0x0000000000219000 rw- /usr/lib/x86_64-linux-gnu/libc.so.6
+0x00007fbd35019000 0x00007fbd35026000 0x0000000000000000 rw-
+0x00007fbd3502f000 0x00007fbd35031000 0x0000000000000000 rw-
+0x00007fbd35031000 0x00007fbd35033000 0x0000000000000000 r-- /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+0x00007fbd35033000 0x00007fbd3505d000 0x0000000000002000 r-x /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+0x00007fbd3505d000 0x00007fbd35068000 0x000000000002c000 r-- /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+0x00007fbd35069000 0x00007fbd3506b000 0x0000000000037000 r-- /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+0x00007fbd3506b000 0x00007fbd3506d000 0x0000000000039000 rw- /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+0x00007fff2605d000 0x00007fff2607e000 0x0000000000000000 rw- [stack]
+0x00007fff261b2000 0x00007fff261b6000 0x0000000000000000 r-- [vvar]
+0x00007fff261b6000 0x00007fff261b8000 0x0000000000000000 r-x [vdso]
+
+gef➤  find 0x00007fbd34dfd000,0x00007fbd35019000,"/bin/sh"
+0x7fbd34fd5678
+1 pattern found.
+gef➤  x/s 0x7fbd34fd5678
+0x7fbd34fd5678: "/bin/sh"

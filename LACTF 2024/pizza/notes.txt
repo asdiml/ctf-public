@@ -1,0 +1,24 @@
+To automate register-setting with a ROP chain, use
+> rop = ROP(exe)
+> rop(rdi=someValue)
+
+To append a raw value to the rop chain, do
+> rop.raw(someValue)
+
+The rop chain can then be sent with
+> r.sendline(rop.chain())
+
+Even more automation
+> rop.system(next(libc.search(b"/bin/sh\x00")))
+
+Text representation of ROP chain: log.info(rop.dump())
+
+Onegadgets are instruction sequences in libc that will spawn a shell
+under certain constraints. 
+
+
+
+If unable to leak libc, can use syscall gadget
+
+syscall numbers can be found at https://x64.syscall.sh/ or https://syscalls.pages.dev/
+Or use `man syscall`

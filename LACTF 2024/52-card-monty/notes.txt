@@ -1,0 +1,19 @@
+Stack frame of game: 
+    [rbp-0x1c0] = long cards[52]
+    [rbp-0x20] = char name[20]
+    [rbp-0xc] = ???? (possibly padding)
+    [rbp-0x8] = canary
+    [rbp] = old rbp
+    [rbp+8] = retaddr
+
+Therefore cards[55] accesses the canary, while cards[57] accesses the retaddr
+
+game() returns to 0x000055555555567e without ASLR
+win() is at 0x0000555555555239 without ASLR
+retaddr - win = 0x000055555555567e - 0x0000555555555239 = 1093
+
+name[40] to name[47] is the return address of game() to main()
+
+For gdb
+- setting the canary: set {long}($rbp-8) = 0x8f2f12cfa334fc00
+- setting the retaddr: set {long}(0x7fffffffdc88) = 0x0000555555555239
