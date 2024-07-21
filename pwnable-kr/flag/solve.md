@@ -26,7 +26,23 @@ $Id: UPX 3.08 Copyright (C) 1996-2011 the UPX Team. All Rights Reserved. $
 
 It turns out that the binary is UPX-packed, and we need to unpack it. The `readelf` output now makes sense. When running the UPX-packed binary, the unpacking stub unpacks and recreates the original code from the compressed code (which aligns with the section headers of the ELF) before executing it.
 
-It turns out that executable packers like UPX are commonly used by malware authors in an attempt to bypass detection by antivirus signatures.  
+It turns out that executable packers like UPX are commonly used by malware authors in an attempt to bypass detection by antivirus signatures. 
+
+## Improvements on Hindsight
+
+On hindsight, I should've used `checksec`, since it detects that the binary is UPX-packed
+
+```bash
+[*] '/mnt/c/CTFs/pwnable-kr/flag/flag'
+    Arch:     amd64-64-little
+    RELRO:    No RELRO
+    Stack:    No canary found
+    NX:       NX unknown - GNU_STACK missing
+    PIE:      No PIE (0x400000)
+    Stack:    Executable
+    RWX:      Has RWX segments
+    Packer:   Packed with UPX
+```
 
 ## Resources 
 
