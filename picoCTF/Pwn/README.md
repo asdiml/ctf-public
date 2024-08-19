@@ -6,6 +6,8 @@ If you don't see a writeup (i.e. only a solve script), that means the concepts u
 
 ## Categories (Easy & Medium)
 
+> This difficulty characterization is now old (picoCTF has changed its categories), but I will stick to this for now for I believe the categorization is rather accurate. 
+
 ### Format String Exploitation
 - [flag-leak](./flag-leak/solve.py) (Read off stack)
 - [format-string-1](./format-string-1/solve.md) (Read off stack)
@@ -49,11 +51,15 @@ If you don't see a writeup (i.e. only a solve script), that means the concepts u
 - [babygame02 (INCOMPLETE)](./babygame02%20(INCOMPLETE)/solve.md) (Array Negative-index write, ret2win)
 - [function-overwrite](./function-overwrite/solve.md) (Array Negative-index write)
 
+#### Binary Instrumentation
+- [bizz-fuzz](./bizz-fuzz/solve.md) (Vulnerability Search, Binary Instrumentation for path to Vulnerability)
+
 #### Others
 - [hijacking](./hijacking/solve.md) (Python Library hijacking / Privilege Escalation)
 - [RPS](./RPS/solve.py) (Understanding `strstr`)
+- [seed-sPRiNG](./seed-sPRiNG/solve.py) (Time-based PRNG Seeding)
 - [tic-tac](./tic-tac/solve.md) (TOCTOU) **TODO: Review writeup and solution**
-- [wine](./wine/solve.md) (wine / Embryo Windows pwn)
+- [wine](./wine/solve.md) (wine / Baby Windows pwn)
 
 ## Categories (Hard) **Work-in-Progress**
 

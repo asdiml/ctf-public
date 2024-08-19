@@ -131,4 +131,4 @@ My question is, is this difference due to the binary being x86 (32-bit), due to 
 
 #### Update: Not due to clang / gcc
 
-In both 32-bit clang and gcc, loading of NX addresses into `eip` occurs, so it is unlikely to arise from that compiler difference. 
+In both 32-bit clang and gcc, loading of NX addresses into `eip` occurs, so this is unlikely to have arisen from that compiler difference. 

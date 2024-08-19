@@ -65,7 +65,6 @@ A summary of the options is as follows:
 5. Option `l` allocates a chunk of (at least) 8 bytes and dumps its contents to stdout
 6. Option `E` exits the program immediately
 
-<br>
 
 ## Concept behind the Exploit
 

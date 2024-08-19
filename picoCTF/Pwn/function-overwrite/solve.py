@@ -9,8 +9,8 @@ context.binary = exe
 
 def conn():
     if args.LOCAL:
-        # r = process([exe.path])
-        r = gdb.debug([exe.path])
+        r = process([exe.path])
+        # r = gdb.debug([exe.path])
         if args.DEBUG:
             gdb.attach(r)
     else:
