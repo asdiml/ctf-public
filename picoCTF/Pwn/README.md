@@ -26,6 +26,7 @@ If you don't see a writeup (i.e. only a solve script), that means the concepts u
 - [x-sixty-what](./x-sixty-what/solve.py) (ret2win)
 
 #### ROP
+- [guessing-game-1](./guessing-game-1/solve.md) (rop2syscall, which includes ROP to write `/bin/sh`)
 - [heresalibc](./heresalibc/notes.md) (ret2libc)
 
 ### Heap
@@ -42,7 +43,7 @@ If you don't see a writeup (i.e. only a solve script), that means the concepts u
 
 ### Shellcode
 - [filtered-shellcode](./filtered-shellcode/solve.md) (Shellcode, 2-byte max-length instrs)
-- [ropfu](./ropfu/solve.md) (ROP to Shellcode)
+- [ropfu](./ropfu/solve.md) (rop2shellcode)
 
 ### Misc
 

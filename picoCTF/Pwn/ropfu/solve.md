@@ -70,8 +70,8 @@ Gadget can be found with `xgadget`
 
 Based on [this reference about passing parameters to x86 syscalls](https://en.wikibooks.org/wiki/X86_Assembly/Interfacing_with_Linux), [this x86 Syscall Reference](https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#x86-32_bit) and [this StackOverflow post](https://stackoverflow.com/questions/36673765/why-can-the-execve-system-call-run-bin-sh-without-any-argv-arguments-but-not), we need
 
-1. `eax` = 11
-2. `ebx` to contain a pointer to a `/bin/sh` string
+1. `eax` = 11, 
+2. `ebx` to contain a pointer to a `/bin/sh` string, 
 3. `ecx` to contain a null pointer, and 
 4. `edx` to contain a null pointer. 
 
