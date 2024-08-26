@@ -26,7 +26,7 @@ If you don't see a writeup (i.e. only a solve script), that means the concepts u
 - [x-sixty-what](./x-sixty-what/solve.py) (ret2win)
 
 #### ROP
-- [guessing-game-1](./guessing-game-1/solve.md) (rop2syscall, which includes ROP to write `/bin/sh`)
+- [guessing-game-1](./guessing-game-1/solve.md) (ret2syscall, which includes ROP to write `/bin/sh`)
 - [heresalibc](./heresalibc/notes.md) (ret2libc)
 
 ### Heap
@@ -62,6 +62,6 @@ If you don't see a writeup (i.e. only a solve script), that means the concepts u
 - [tic-tac](./tic-tac/solve.md) (TOCTOU) **TODO: Review writeup and solution**
 - [wine](./wine/solve.md) (wine / Baby Windows pwn)
 
-## Categories (Hard) **Work-in-Progress**
+## Categories (Hard)
 
-Pwn gods, please bless me with a solve
+1. [guessing-game-2](./guessing-game-2/solve.md)(Format String, GOT Leak, libc Version Identification)

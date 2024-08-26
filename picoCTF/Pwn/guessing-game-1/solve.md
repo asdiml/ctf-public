@@ -1,6 +1,6 @@
 # guessing-game-1
 
-PRNG, ROP (Leak address), rop2syscall
+PRNG, ROP (Leak address), ret2syscall
 
 ## checksec
 
@@ -43,7 +43,7 @@ Clearly, there exists a possible buffer overflow to be exploited, and there is n
 
 To reach the `win` function, we need to pass a check against a value generated from an unseeded PRNG (incremented by 1), which isn't particularly difficult (see the [solve script](./solve.py) for use of the `ctype` library). 
 
-## rop2libc
+## ret2syscall
 
 We're like to call `libc`'s `system`, but it is not used and thus not linked into the executable. 
 
