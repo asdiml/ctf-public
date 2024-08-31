@@ -3,7 +3,8 @@
 from pwn import *
 import os
 
-# Need to chdir because pwninit hardcoded the interpreter of ./patched/vuln_patched to ./ld-2.27.so
+# Need to chdir (instead of using ELF("./patched/vuln_patched") ) because
+# pwninit hardcoded the interpreter of ./patched/vuln_patched to ./ld-2.27.so
 os.chdir("./patched")
 
 exe = ELF("vuln_patched")

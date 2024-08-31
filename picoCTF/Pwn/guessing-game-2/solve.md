@@ -205,3 +205,7 @@ xinet_startup.sh
 $ cat flag.txt
 picoCTF{p0p_r0p_4nd_dr0p_1t_22bfee4300f20d7e}
 ```
+
+## Alternative Methods
+
+- [Using the fmtstr vulnerability to leak the canary before doing the ret2libc attack through the buffer overflow using `gets`](https://captain-woof.medium.com/picoctf-guessing-game-2-walkthrough-ret2libc-stack-cookies-6f9fc39273bf)

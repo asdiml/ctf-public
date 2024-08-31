@@ -6,7 +6,7 @@ If you don't see a writeup (i.e. only a solve script), that means the concepts u
 
 ## Categories (Easy & Medium)
 
-> This difficulty characterization is now old (picoCTF has changed its categories), but I will stick to this for now for I believe the categorization is rather accurate. 
+> Note: This difficulty characterization is now old (picoCTF has changed its Pwn difficulty categorization), but I'm sticking to this because I believe the categorization is in fact rather accurate. 
 
 ### Format String Exploitation
 - [flag-leak](./flag-leak/solve.py) (Read off stack)
@@ -64,4 +64,5 @@ If you don't see a writeup (i.e. only a solve script), that means the concepts u
 
 ## Categories (Hard)
 
-1. [guessing-game-2](./guessing-game-2/solve.md)(Format String, GOT Leak, libc Version Identification)
+1. [fermat-strings](./fermat-strings/solve.md) (Format String, GOT Overwrite, ret2libc)
+2. [guessing-game-2](./guessing-game-2/solve.md)(Format String, GOT Leak, libc Version Identification, ret2libc)

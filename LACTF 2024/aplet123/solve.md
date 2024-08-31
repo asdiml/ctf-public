@@ -107,7 +107,7 @@ First, note that canaries almost always begin with the null byte. Thus, to leak 
 
 Let us then review our current understanding of the stack shown below
 
-![Stack Visualization](doc_assets/image.png)
+![Stack Visualization](doc_assets/stack_visualization.png)
 
 Recall that we can leak an address an increment of 4 away from where `"i'm"` begins. Thus, if we overflow `input` such that `"i'm"` ends the `rbp-0x10` doubleword, we will leak the string starting from  `rbp-0x7`, which is `rbp-0xb + 4`! 
 
