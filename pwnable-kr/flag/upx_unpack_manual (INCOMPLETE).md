@@ -8,6 +8,13 @@ Steps were taken from these Medium articles on manually unpacking a UPX-packed E
 - [Part 1](https://dlnhxyz.medium.com/manually-unpacking-a-upx-packed-binary-with-radare2-part-1-7039317c2ed8)
 - [Part 2](https://dlnhxyz.medium.com/manually-unpacking-a-upx-packed-binary-with-radare2-part-2-be00860b5eac)
 
+Note that we can follow this tutorial because `flag` is statically linked, as is shown by running the `file flag` command
+
+```bash
+asdiml@DESKTOP-XXXXXX:.../pwnable-kr/flag$ file flag
+flag: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, no section header
+```
+
 ## Running `strace` to enumerate syscalls
 
 We run a quick strace command (specifically `strace ./flag`) to see if the self-unpacking binary sets up the memory regions in a similar manner as in the [reference articles](#reference)
@@ -113,7 +120,23 @@ Segmentation fault
 
 ## Dealing with the segfault
 
-TODO
+Firstly, note that without our intervention, the entry point of `flag_manually_unpacked` is already 0x401058, presumably because the decompression routine rewrote the ELF headers as well. 
+
+> TODO: INVESTIGATE
+
+Using gdb, we see that the segfault occurs at the instruction 0x423a76. 
+
+When we view the function that the instruction is a part of, we realize that this seems to be the start of the UPX decompression routine (due to the storing of all registers i.e. a `pushad` instruction)
+
+![pushad.png](./doc/assets/pushad.png)
+
+The issue is that r8 is null at the point of deferencing. After some exploration through Binary Ninja and gdb, it seems that the issue is that r8 is set to null at instruction `0x4232a9`, in the following function
+
+![sub_4232a0 function](./doc/assets/r8-null.png)
+
+So it seems to be that the memory pointed to by `fs-0x60`is being dereferenced. 
+
+> TODO: Figure out the problem
 
 ## Last Notes
 
