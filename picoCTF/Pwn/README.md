@@ -64,5 +64,8 @@ If you don't see a writeup (i.e. only a solve script), that means the concepts u
 
 ## Categories (Hard)
 
+In alphabetical order, 
+
 1. [fermat-strings](./fermat-strings/solve.md) (Format String, GOT Overwrite, ret2libc)
 2. [guessing-game-2](./guessing-game-2/solve.md)(Format String, GOT Leak, libc Version Identification, ret2libc)
+3. [kit-engine](./kit-engine/solve.md) (Shellcode)
