@@ -1,6 +1,6 @@
 # format string 3
 
-Format-string Exploit + GOT Overwrite
+Format-string Exploit, GOT Overwrite
 
 ## checksec
 

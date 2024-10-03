@@ -137,4 +137,4 @@ Stdout b'picoCTF{vr00m_vr00m_ ca5a2f612129286}\n'
 Stderr b'Received signal 11 SEGV_MAPERR 000000000026\n\n==== C stack trace ===============================\n\n [0x55a17e3f1cd7]\n [0x7f738eca3980]\n [0x7f738f0d8030]\n[end of stack trace]\n'
 ```
 
-The SEGV_MAPERR is due to the shellcode not returning after it concludes its syscalls (at least that's what I got when running it locally) - the CPU is simply attempting to decode the uninitialized data after the shellcode as instructions. 
+The SEGV_MAPERR is due to the shellcode not returning after it concludes its syscalls (at least that's what I got when running it locally) - the CPU attempts to decode the uninitialized data after the shellcode as instructions, which causes problems. 

@@ -62,9 +62,9 @@ nextchunk-> +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
             +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ```
 
-To maintain this, `malloc_usable_bytes` is typically a multiple of 16 (by rounding up the number of bytes of memory allocated). 
+For the alignment of potentially complex data structures on the heap, on 64-bit systems, the heap is 16-bit aligned, and for 32-bit systems, the heap is 8-bit aligned. This is done by rounding up the number of bytes of memory allocated. 
 
-Note that the pointer returned by `ptmalloc` points to the `mem` section, not the beginning of the chunk which would be the `chunk` section. 
+The pointer returned by `ptmalloc` points to the `mem` section, not the beginning of the chunk which would be the `chunk` section. 
 
 ## Understanding tcache
 
@@ -87,11 +87,11 @@ typedef struct tcache_perthread_struct
 } tcache_perthread_struct;
 ```
 
-> **NOTE** Bare with how the concepts and data structures are floating around, and just read through this - it will get clearer with the explanation below. 
+> **NOTE:** Bear with how the concepts and data structures are floating around, and just read through this - it will get clearer with the explanation below. 
 
-From the code above though, it can be elucidated that the tcache is simply a list of counts (which are byte-sized integers stored as chars) which corresponds with a list of pointers to tcache entries. 
+From the code above, it can be elucidated that the tcache is simply a list of counts (which are byte-sized integers stored as chars) which corresponds with a list of pointers to tcache entries. 
 
-These tcache entries are the addresses of freed chunks from the heap. Note also that the tcache itself usually exists as a chunk on the heap. 
+These tcache entries are the addresses of freed chunks from the heap. The tcache itself also usually exists as a chunk on the heap. 
 
 ### counts
 
@@ -102,13 +102,11 @@ First, observe that by default, `TCACHE_MAX_BINS` is set to be 64 (in the glibc 
 # define TCACHE_MAX_BINS 64
 ```
 
-The `counts` array in `tcache_perthread_struct` thus has 64 elements. Specifically, the array stores, consecutively, the number of freed chunks of sizes 24 bytes to 1032 bytes, in 16-byte increments. 
+The `counts` array in `tcache_perthread_struct` thus has 64 elements. Specifically, the array stores, consecutively, the number of freed chunks of sizes 24 bytes to 1032 bytes, in 16-byte increments (for 64-bit systems). For 32-bit systems, the sizes are 12 bytes to 516 bytes, in 8-byte increments. 
 
-Note that this size value includes the size field of the chunk (which is an 8-byte field), so the `malloc` call that allocated that chunk must have requested for a number of bytes that, rounded up to a multiple of 16, is `n-8` bytes. 
+Note that this size value includes the size field of the chunk (which is an 8-byte / 4-byte field), so the `malloc` call that allocated that chunk must have requested for a number of bytes that, rounded up to a multiple of 16, is `n-8` bytes. 
 
-(In x86, these chunk sizes range from 12 to 516 bytes with 8-byte increments)
-
-For example, the numerical value of the char `counts[4]` would be the number of freed chunks of size 88 stored in (or more specifically, tracked by) that particular tcache. 
+For example, in x86-64, the numerical value of the char `counts[4]` would be the number of freed chunks of size 88 stored in (or more specifically, tracked by) that particular tcache. 
 
 ### entries
 
@@ -118,4 +116,4 @@ We call this singly-linked list of tcache chunks of a particular size a bin.
 
 The head pointer points directly to the first freed chunk (that exists on the heap) tracked in the tcache. This is because each tcache chunk of a particular size contains a pointer to the next tcache chunk in that bin (that pointer is in fact the first 8-byte data field in the tcache chunk struct). 
 
-Note that each tcache bin can, by default, contain at most 7 chunks. 
+Note that each tcache bin can, by default, contain at most 7 chunks (as dictated by the `TCACHE_FILL_COUNT` preprocessor definition previously shown). 
