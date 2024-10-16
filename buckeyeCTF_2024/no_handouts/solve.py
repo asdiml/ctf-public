@@ -17,8 +17,8 @@ def conn():
         r = process([exe.path])
         # r = gdb.debug([exe.path])
     else:
-        r = remote("localhost", 1024)
-        # r = remote("challs.pwnoh.io", 13371)
+        # r = remote("localhost", 1024)
+        r = remote("challs.pwnoh.io", 13371)
 
     return r
 
