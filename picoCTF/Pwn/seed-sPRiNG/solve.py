@@ -5,7 +5,7 @@ Explanation of script
 - This script exploits how rand() is a Pseudo-RNG and thus will produce the same output if seeded with the same value
 - The seed is time(0), which is a very generous time function that returns the no. of seconds since the Epoch, 1970-01-01 00:00:00 +0000 (UTC).
 - Thus the latency of calling time(0) in the Python script after it is called in the binary isn't likely to be an issue for any one run
-- To win, we then all rand()%16 30 times to complete the 30 levels of the game
+- To win, we match each rand()%16 30 times to complete the 30 levels of the game
 '''
 
 from pwn import *
