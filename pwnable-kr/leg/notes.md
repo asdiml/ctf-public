@@ -12,7 +12,7 @@ While instruction sizes can vary in x86asm, instructions are always 4-bytes long
 
 The Branch Exchange, `bx`, or Branch Link Exchange, `blx`, instructions (as opposed to their `b` or `bl` analogues) are used to switch between ARM and THUMB states. 
 
-`bx` and `blx` require a register argument, and will result in a switch to THUMB (or from THUMB back to ARM) if the least significant bit of register is turned on i.e. if lsb = 1. Basically, the lsb of that register toggles the THUMB flag of the CSPR (similar to EFLAG in x86). 
+`bx` and `blx` require a register argument, and will result in a switch to THUMB (or from THUMB back to ARM) if the least significant bit of register is turned on i.e. if lsb = 1. Basically, the lsb of that register toggles the THUMB flag of the CSPR (stands for Current Program Status Register, and is similar to EFLAG in x86). 
 
 The tutorial https://azeria-labs.com/arm-conditional-execution-and-branching-part-6/ provides an example of how to switch from ARM to THUMB with a branch exchange instr: 
 
@@ -20,6 +20,8 @@ The tutorial https://azeria-labs.com/arm-conditional-execution-and-branching-par
 add r3, pc, #1   @ increase value of PC by 1 and add it to R3
 bx r3            @ branch + exchange to the address in R3 -> switch to Thumb state because LSB = 1
 ```
+
+Note that branching to an address with LSB set (as shown above) causes no misalignment issues, since the pc is treated as if the LSB does not matter anyways. 
 
 ### Program Counter-related
 In ARM asm, the program counter (PC) points two instructions ahead of the current instruction. This is because older ARM processors used to always fetch two instructions ahead of the currently-executed instruction, and ARM asm retains this definition to ensure backwards compatibility.
