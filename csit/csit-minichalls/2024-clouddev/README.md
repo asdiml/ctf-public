@@ -1,4 +1,4 @@
-# CSIT Mini-Challenge 2024
+# CSIT Mini-Challenge 2024 (Cloud Dev)
 
 Cloud Development Mini-Challenge
 
