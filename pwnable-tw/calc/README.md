@@ -104,7 +104,7 @@ We can then use the technique described in [Stack Frame of the `calc` function](
 
 ### Injecting the ROP Chain
 
-We use the following ROP chain to rop2syscall (creaation mostly automated using pwntools)
+We use the following ROP chain to rop2syscall (creation mostly automated using pwntools)
 
 ```
 0x0000:        0x80701d0 pop edx; pop ecx; pop ebx; ret
