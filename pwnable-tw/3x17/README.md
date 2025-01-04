@@ -136,7 +136,7 @@ pop rbp
 
 Thus, if we inject the `leave; ret` gadget into `fini_array[0]`, then after the `leave` rsp will be set to `fini_array`, and after the `ret` rsp will be `fini_array + 8`. The stack would be pivoted to `fini_array[1]`, after which we would know the addresses to write in further ROP gadgets (since the address of `.fini_array` is fixed because there is no PIE). 
 
-In other words, if we setup the ROP chain to spawn a shell from `fini_array + 16` onwards, and let `fini_array[0]` be a `leave; ret` gadget and `fini_array[1]` be a `ret` gadget, then 
+In other words, if we setup the ROP chain to spawn a shell from `fini_array + 16` onwards, and let `fini_array[0]` be a `leave; ret` gadget and `fini_array[1]` be a `ret` gadget, then `fini_array[1]` will be a harmless gadget that runs before the stack is pivoted, and then `fini_array[1]` will run again before the subsequent gadgets past `fini_array[1]` will run. 
 
 Notably, we **must** setup the rest of the ROP chain before pivoting the stack, because that would take away our arb-write capability, since both entries of `fini_array` are needed to [call `main` repeatedly](#calling-main-repeatedly). 
 
@@ -156,6 +156,8 @@ We use the following ROP chain to rop2syscall (creation mostly automated using p
 ```
 
 A separate arb-write to `0x4b7c70` (just some arbitrary address in .data) is done to write in the `b"/bin/sh\x00"` string. 
+
+We write in these gadgets going upwards from the address `fini_array + 16`. 
 
 ## Flag
 
