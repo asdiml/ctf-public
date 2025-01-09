@@ -15,3 +15,7 @@
 ## vDSO
 
 - https://web.archive.org/web/20161122032625/http://www.trilithium.com/johan/2005/08/linux-gate/
+
+## Heap
+
+- https://heap-exploitation.dhavalkapil.com/diving_into_glibc_heap
