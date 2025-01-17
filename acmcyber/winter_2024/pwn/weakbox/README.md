@@ -322,7 +322,9 @@ We use the `lea rsi, [rip + 9]` instr before the `write` syscall because the pay
 
 ### Box 1
 
-Box 1 loops continuously attempting to make 2 syscalls
+At first, we wanted Box 1 to continuously attempt to spawn a shell, but given that the pre-write hook is still there and prevents the the child tracee from writing to its stdout (that is piped back to the tracer in `read_box`), we realized that the shell would not be able to communicate with us (at least it would not be able to write back to us). Thus, we opted to just read the flag directly. 
+
+Box 1 loops continuously, attempting to make 2 syscalls
 
 1. open `flag.txt`, which returns a fd for the flag file, and
 2. sendfile, which sends data from one fd (from the open syscall) to another (stdout)
@@ -348,6 +350,6 @@ shc = f'''
 
 For the `sendfile` syscall, I just took the assembly code for `shellcraft.sendfile(1, 1, 0, 0x100)` and modified `mov rsi, rdi` to `mov rsi, rax`. 
 
-## Flag 
+## Flag
 
 Feel free to run the [solve script](./solve.py) (no guarantees that the infra is still up)

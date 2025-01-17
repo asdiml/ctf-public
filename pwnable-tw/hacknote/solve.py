@@ -24,6 +24,7 @@ def conn():
 
     return r
 
+
 def alloc_note(size: int, content: bytes, r):
     r.sendlineafter(b'choice :', b'1')
     r.sendlineafter(b'size :', str(size).encode())
@@ -36,6 +37,7 @@ def free_note(index: int, r):
 def print_note(index: int, r):
     r.sendlineafter(b'choice :', b'3')
     r.sendlineafter(b'Index :', str(index).encode())
+
 
 def main():
     r = conn()
