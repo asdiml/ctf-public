@@ -2,7 +2,7 @@
 
 ## ELF Format
 
-- [ELF Format Cheatsheet](https://gist.github.com/DtxdF/e6d940271e0efca7e0e2977723aec360)
+[ELF Format Cheatsheet](https://gist.github.com/DtxdF/e6d940271e0efca7e0e2977723aec360)
 
 ## Binary Startup Routine
 
