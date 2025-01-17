@@ -24,4 +24,4 @@ and more.
 
 ## 🏃‍♂️ Current Pursuits 🏃‍♂️
 
-Currently working on solving the [BuckeyeCTF 2024 Pwn challenges](./buckeyeCTF_2024/) I did not solve during the CTF
+Currently working on solving [pwntable.tw challenges](./pwnable-tw/)
