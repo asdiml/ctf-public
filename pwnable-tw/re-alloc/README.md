@@ -1,6 +1,6 @@
 # re-alloc
 
-???
+UAF into tcache poisoning, Format String, GOT Overwrite
 
 ## checksec
 
@@ -13,6 +13,8 @@
     PIE:      No PIE (0x400000)
     FORTIFY:  Enabled
 ```
+
+We can overwrite the GOT with PLT addresses without a leak. 
 
 ## Overview of Binary & Vulnerability
 
