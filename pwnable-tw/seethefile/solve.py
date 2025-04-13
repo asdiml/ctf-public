@@ -21,7 +21,7 @@ lin = lambda a: log.info(f"{hex(a)=}")
 sen = lambda a: str(a).encode()
 mangle = lambda ptr, pos: ptr ^ (pos >> 12)
 
-exe = ELF("/home/seethefile/seethefile")
+exe = ELF("./seethefile_patched")
 libc = ELF("./libc.so.6")
 ld = ELF("./ld-2.23.so")
 
